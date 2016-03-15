@@ -48,4 +48,6 @@ struct A_expList_ {
 A_expList A_PairExpList(A_exp, A_expList);
 A_expList A_LastExpList(A_exp);
 
+#define NewA(a) checked_malloc(sizeof(*a))
+
 #endif
