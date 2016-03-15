@@ -50,4 +50,6 @@ A_expList A_LastExpList(A_exp);
 
 #define NewA(a) checked_malloc(sizeof(*a))
 
+int maxargs(A_stm);
+
 #endif

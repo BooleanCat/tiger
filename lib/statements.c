@@ -77,3 +77,17 @@ A_expList A_LastExpList(A_exp last) {
 
     return e;
 }
+
+static void _maxargs(A_stm stm, int* max) {
+    if (stm->kind == A_printStm) {
+        // do stuff
+    }
+}
+
+int maxargs(A_stm stm) {
+    int max = 0;
+
+    _maxargs(stm, &max);
+
+    return max;
+}

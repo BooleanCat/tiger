@@ -22,6 +22,7 @@ int main() {
     );
 
     printf("Hello, World!\n");
+    printf("%i max args\n", maxargs(prog));
 
     return 0;
 }
