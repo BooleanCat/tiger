@@ -1,5 +1,4 @@
 #include "statements.h"
-#include <stdio.h>
 
 A_stm A_CompoundStm(A_stm stm1, A_stm stm2) {
     A_stm s = NewA(s);
