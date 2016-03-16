@@ -11,5 +11,6 @@ typedef int bool;
 #define FALSE 0
 
 void* checked_malloc(int);
+#define MAX(a, b) a > b ? a : b
 
 #endif

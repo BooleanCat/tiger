@@ -1,13 +1,5 @@
 #include "test_statements.h"
 
-static void test_MAX(void** state) {
-    // MAX(a, b) always returns the higher of a and b
-    assert_int_equal(2, MAX(2, 1));
-    assert_int_equal(3, MAX(1, 3));
-    assert_int_equal(0, MAX(0, 0));
-    assert_int_equal(-1, MAX(-1, -2));
-}
-
 static void test_maxargs_no_print(void** state) {
     // maxargs(stm) returns 0 when there are no print statements nested
     A_stm stm = A_AssignStm("a", A_NumExp(7));
@@ -158,7 +150,6 @@ static void test_maxargs_complex(void** state) {
 }
 
 const struct CMUnitTest StatementTests[] = {
-    cmocka_unit_test(test_MAX),
     cmocka_unit_test(test_maxargs_no_print),
     cmocka_unit_test(test_maxargs_one),
     cmocka_unit_test(test_maxargs_two),
