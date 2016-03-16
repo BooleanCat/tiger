@@ -7,6 +7,6 @@
 #include <cmocka.h>
 #include "utils.h"
 
-#define UTILS_TESTS_TOTAL 1
+#define UTILS_TESTS_TOTAL 3
 
 #endif
