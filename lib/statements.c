@@ -88,20 +88,17 @@ static int maxargs_compound(A_stm stm) {
 static int maxargs_assign(A_stm stm) {
     if (stm->u.assign.exp->kind == A_eseqExp)
         return maxargs(stm->u.assign.exp->u.eseq.stm);
-    else
-        return 0;
+    return 0;
 }
 
 static int maxargs_if_eseq(A_exp exp, int max) {
     // maxargs_if_eseq(exp, max) returns the MAX of max or exp substatement
-    int seqMax;
+    int seqMax = max;
 
-    if (exp->kind == A_eseqExp) {
+    if (exp->kind == A_eseqExp)
         seqMax = maxargs(exp->u.eseq.stm);
-        return MAX(max, seqMax);
-    }
-
-    return max;
+        
+    return MAX(max, seqMax);
 }
 
 static int maxargs_print(A_stm stm) {
