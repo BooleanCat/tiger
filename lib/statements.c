@@ -79,38 +79,55 @@ A_expList A_LastExpList(A_exp last) {
     return e;
 }
 
-int maxargs(A_stm stm) {
-    int max = 0;
-    int _max = 0;
-    int seqMax = 0;
-    A_expList expList = NULL;
+static int maxargs_compound(A_stm stm) {
+    int max1 = maxargs(stm->u.compound.stm1);
+    int max2 = maxargs(stm->u.compound.stm2);
 
-    if (stm->kind == A_printStm) {
-        expList = stm->u.print.exps;
-        while (TRUE) {
-            max++;
-            if (expList->kind == A_lastExpList) {
-                if (expList->u.last->kind == A_eseqExp) {
-                    seqMax = maxargs(expList->u.last->u.eseq.stm);
-                    _max = _max > seqMax ? _max : seqMax;
-                }
-                break;
-            }
-            expList = expList->u.pair.tail;
-        }
-        max = max > _max ? max : _max;
-        return max;
-    }
-    else if (stm->kind == A_compoundStm) {
-        if ((_max = maxargs(stm->u.compound.stm1)) > max)
-            max = _max;
-        if ((_max = maxargs(stm->u.compound.stm2)) > max)
-            max = _max;
-    }
-    else if (stm->kind == A_assignStm) {
-        if (stm->u.assign.exp->kind == A_eseqExp)
-            return maxargs(stm->u.assign.exp->u.eseq.stm);
+    return MAX(max1, max2);
+}
+
+static int maxargs_assign(A_stm stm) {
+    if (stm->u.assign.exp->kind == A_eseqExp)
+        return maxargs(stm->u.assign.exp->u.eseq.stm);
+    else
+        return 0;
+}
+
+static int maxargs_if_eseq(A_exp exp, int max) {
+    // maxargs_if_eseq(exp, max) returns the MAX of max or exp substatement
+    int seqMax;
+
+    if (exp->kind == A_eseqExp) {
+        seqMax = maxargs(exp->u.eseq.stm);
+        return MAX(max, seqMax);
     }
 
     return max;
+}
+
+static int maxargs_print(A_stm stm) {
+    int max = 0;
+    int _max = 0;
+    A_expList expList = stm->u.print.exps;
+
+    while (TRUE) {
+        max++;
+        if (expList->kind == A_lastExpList) {
+            _max = maxargs_if_eseq(expList->u.last, _max);
+            break;
+        } else
+            _max = maxargs_if_eseq(expList->u.pair.head, _max);
+
+        expList = expList->u.pair.tail;
+    }
+    return MAX(max, _max);
+}
+
+int maxargs(A_stm stm) {
+    switch (stm->kind) {
+        case A_printStm:    return maxargs_print(stm);
+        case A_compoundStm: return maxargs_compound(stm);
+        case A_assignStm:   return maxargs_assign(stm);
+        default:            return 0;
+    }
 }

@@ -49,6 +49,7 @@ A_expList A_PairExpList(A_exp, A_expList);
 A_expList A_LastExpList(A_exp);
 
 #define NewA(a) checked_malloc(sizeof(*a))
+#define MAX(a, b) a > b ? a : b
 
 int maxargs(A_stm);
 
