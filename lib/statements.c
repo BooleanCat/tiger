@@ -1,4 +1,5 @@
 #include "statements.h"
+#include <stdio.h>
 
 A_stm A_CompoundStm(A_stm stm1, A_stm stm2) {
     A_stm s = NewA(s);
@@ -78,16 +79,38 @@ A_expList A_LastExpList(A_exp last) {
     return e;
 }
 
-static void _maxargs(A_stm stm, int* max) {
-    if (stm->kind == A_printStm) {
-        // do stuff
-    }
-}
-
 int maxargs(A_stm stm) {
     int max = 0;
+    int _max = 0;
+    int seqMax = 0;
+    A_expList expList = NULL;
 
-    _maxargs(stm, &max);
+    if (stm->kind == A_printStm) {
+        expList = stm->u.print.exps;
+        while (TRUE) {
+            max++;
+            if (expList->kind == A_lastExpList) {
+                if (expList->u.last->kind == A_eseqExp) {
+                    seqMax = maxargs(expList->u.last->u.eseq.stm);
+                    _max = _max > seqMax ? _max : seqMax;
+                }
+                break;
+            }
+            expList = expList->u.pair.tail;
+        }
+        max = max > _max ? max : _max;
+        return max;
+    }
+    else if (stm->kind == A_compoundStm) {
+        if ((_max = maxargs(stm->u.compound.stm1)) > max)
+            max = _max;
+        if ((_max = maxargs(stm->u.compound.stm2)) > max)
+            max = _max;
+    }
+    else if (stm->kind == A_assignStm) {
+        if (stm->u.assign.exp->kind == A_eseqExp)
+            return maxargs(stm->u.assign.exp->u.eseq.stm);
+    }
 
     return max;
 }
