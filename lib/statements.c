@@ -91,28 +91,46 @@ static int maxargs_assign(A_stm stm) {
     return 0;
 }
 
-static int maxargs_if_eseq(A_exp exp, int max) {
-    // maxargs_if_eseq(exp, max) returns the MAX of max or exp substatement
-    int seqMax = max;
+static int maxargs_exp(A_exp);
 
-    if (exp->kind == A_eseqExp)
-        seqMax = maxargs(exp->u.eseq.stm);
-        
-    return MAX(max, seqMax);
+static int maxargs_exp_eseq(A_exp exp) {
+    int expMax = maxargs_exp(exp->u.eseq.exp);
+    int stmMax = maxargs(exp->u.eseq.stm);
+
+    return MAX(expMax, stmMax);
+}
+
+static int maxargs_exp_op(A_exp exp) {
+    int left = maxargs_exp(exp->u.op.left);
+    int right = maxargs_exp(exp->u.op.right);
+
+    return MAX(left, right);
+}
+
+static int maxargs_exp(A_exp exp) {
+    switch(exp->kind) {
+        case A_eseqExp: return maxargs_exp_eseq(exp);
+        case A_opExp:   return maxargs_exp_op(exp);
+        default:        return 0;
+    }
 }
 
 static int maxargs_print(A_stm stm) {
     int max = 0;
     int _max = 0;
+    int expMax;
     A_expList expList = stm->u.print.exps;
 
     while (TRUE) {
         max++;
         if (expList->kind == A_lastExpList) {
-            _max = maxargs_if_eseq(expList->u.last, _max);
+            expMax = maxargs_exp(expList->u.last);
+            _max = MAX(_max, expMax);
             break;
-        } else
-            _max = maxargs_if_eseq(expList->u.pair.head, _max);
+        } else {
+            expMax = maxargs_exp(expList->u.pair.head);
+            _max = MAX(_max, expMax);
+        }
 
         expList = expList->u.pair.tail;
     }
