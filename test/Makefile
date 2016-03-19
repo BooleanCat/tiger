@@ -1,13 +1,13 @@
 all: TestTiger clean
 
-main.o: main.c
-	gcc -std=c99 -c -I../include main.c
+main.o: lib/main.c
+	gcc -std=c99 -c -I../include -I./include lib/main.c
 
-test_utils.o: test_utils.c
-	gcc -std=c99 -I../include -c test_utils.c
+test_utils.o: lib/test_utils.c
+	gcc -std=c99 -I../include -I./include -c lib/test_utils.c
 
-test_statements.o: test_statements.c
-	gcc -std=c99 -I../include -c test_statements.c
+test_statements.o: lib/test_statements.c
+	gcc -std=c99 -I../include -I./include -c lib/test_statements.c
 
 statements.o: ../lib/statements.c
 	gcc -std=c99 -I../include -c ../lib/statements.c
