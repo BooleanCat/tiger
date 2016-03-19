@@ -170,21 +170,46 @@ static void test_maxargs_complex(void** state) {
 }
 
 void test_maxargs_exp_op(void** state) {
-    A_stm stm = A_PrintStm(A_LastExpList(
-        A_OpExp(
-            A_EseqExp(
-                A_PrintStm(A_PairExpList(
-                    A_NumExp(8),
-                    A_LastExpList(A_NumExp(9))
-                )),
-                A_NumExp(7)
-            ),
-            A_plus,
-            A_NumExp(17)
-        )
-    ));
+    A_stm stm = A_PrintStm(A_LastExpList(A_OpExp(
+        A_EseqExp(
+            A_PrintStm(A_PairExpList(
+                A_NumExp(8),
+                A_LastExpList(A_NumExp(9))
+            )),
+            A_NumExp(7)
+        ),
+        A_plus,
+        A_NumExp(17)
+    )));
 
     assert_int_equal(2, maxargs(stm));
+}
+
+void test_maxargs_exp_op_nested(void** state) {
+    A_stm stm = A_PrintStm(A_LastExpList(A_OpExp(
+        A_OpExp(
+            A_OpExp(
+                A_EseqExp(
+                    A_PrintStm(A_PairExpList(
+                        A_NumExp(7),
+                        A_PairExpList(
+                            A_NumExp(8),
+                            A_LastExpList(A_NumExp(9))
+                        )
+                    )),
+                    A_NumExp(14)
+                ),
+                A_plus,
+                A_NumExp(5)
+            ),
+            A_times,
+            A_NumExp(19)
+        ),
+        A_minus,
+        A_NumExp(42)
+    )));
+
+    assert_int_equal(3, maxargs(stm));
 }
 
 const struct CMUnitTest StatementTests[] = {
@@ -201,4 +226,5 @@ const struct CMUnitTest StatementTests[] = {
     cmocka_unit_test(test_maxargs_eseq_nested),
     cmocka_unit_test(test_maxargs_complex),
     cmocka_unit_test(test_maxargs_exp_op),
+    cmocka_unit_test(test_maxargs_exp_op_nested),
 };

@@ -7,6 +7,6 @@
 #include <cmocka.h>
 #include "statements.h"
 
-#define STATEMENT_TESTS_TOTAL 13
+#define STATEMENT_TESTS_TOTAL 14
 
 #endif
