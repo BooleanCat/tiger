@@ -6,6 +6,9 @@
 #include <setjmp.h>
 #include <cmocka.h>
 
-#define INTERP_TESTS_TOTAL 1
+#include "statements.h"
+#include "interp.h"
+
+#define INTERP_TESTS_TOTAL 5
 
 #endif

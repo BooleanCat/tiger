@@ -1,6 +1,8 @@
 #ifndef INTERP_H
 #define INTERP_H
 
+#include <string.h>
+
 #include "utils.h"
 #include "statements.h"
 
