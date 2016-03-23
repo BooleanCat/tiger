@@ -49,10 +49,15 @@ void test_interpExp_idOp_nested(void** state) {
     assert_ptr_equal(t, result.t);
 }
 
+void test_interpExp_eseqExp(void** state) {
+    assert_null(NULL);
+}
+
 const struct CMUnitTest InterpTests[] = {
     cmocka_unit_test(test_interpExp_numExp),
     cmocka_unit_test(test_interpExp_idExp),
     cmocka_unit_test(test_interpExp_idExp_nested),
     cmocka_unit_test(test_interpExp_idOp),
     cmocka_unit_test(test_interpExp_idOp_nested),
+    cmocka_unit_test(test_interpExp_eseqExp),
 };
