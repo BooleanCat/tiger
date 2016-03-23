@@ -9,6 +9,6 @@
 #include "statements.h"
 #include "interp.h"
 
-#define INTERP_TESTS_TOTAL 5
+#define INTERP_TESTS_TOTAL 6
 
 #endif
