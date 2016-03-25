@@ -142,6 +142,5 @@ int maxargs(A_stm stm) {
         case A_printStm:    return maxargs_print(stm);
         case A_compoundStm: return maxargs_compound(stm);
         case A_assignStm:   return maxargs_assign(stm);
-        default:            return 0;
     }
 }

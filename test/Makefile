@@ -1,4 +1,4 @@
-GCC := gcc -std=c99 -I./include -I../include
+GCC := gcc -std=c99 -Wall -I./include -I../include
 
 all: TestTiger clean
 
