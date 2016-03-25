@@ -8,6 +8,7 @@ mkdir $DIR/bin
 
 gcc \
     -std=c99 \
+    -Wall \
     $LIB_DIR/main.c $LIB_DIR/utils.c $LIB_DIR/statements.c \
     -I./include \
     -o $DIR/bin/test
